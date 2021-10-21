@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <math.h>
+#define n 8
+bool hang[n+1];
+int p[n+1];
+int count =0;
+void Generatep(int lie)
+{
+    //递归边界，生成一个合法方案
+    if(lie == n +1)
+    {
+        count++;
+        for(int k = 1; k <= n; k++ )
+        {
+            printf("%d ",p[k]);
+        }
+        printf("\n");
+        return ;
+    }
+    //第ｘ行
+    for(int x =1; x <=n; x++)
+    {
+        //第ｘ行还没有皇后
+        if(hang[x] == 0)
+        {
+            bool flag = 1;//表示当前的皇后不会和之前的皇后冲突
+            for(int pre =1; pre < lie; pre++)//遍历之前的皇后
+            {
+                if(abs(lie - pre) == abs(x - p[pre]))
+                {
+                    flag = 0;
+                    break;
+                }
+            }
+            //如果可以把皇后放在第ｘ行
+            if(flag)
+            {
+                //令第index列的皇后的行号为ｘ
+                p[lie] = x;
+                //表示第ｘ行已被占用
+                hang[x] = 1;
+                //递归处理第index+1　列皇后
+                Generatep(lie+1);
+                //递归完毕后，还原第ｘ行为未占有
+                hang[x] = 0;
+            }
+        }
+    }
+}
+
+int main()
+{
+    for(int m =0; m <=8; m++)
+    {
+        hang[m] = 0;
+    }//初始化八行为0 
+
+    Generatep(1);
+    printf("%d\n",count);
+    return 0;
+}
+
+
