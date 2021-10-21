@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<math.h>
+int rank[20];
+bool vis[20];
+int n,cnt=0;
+void dfs(int pos){
+	if(n!=0&&pos==n+1){//递归边界条件 
+		cnt++;
+		return;
+	}
+	for(int i=1;i<=n;i++){//枚举每行 
+		if(vis[i]==false){
+			bool flag=true;
+			for(int j=1;j<pos;j++){//枚举pos之前的皇后 
+				if(abs(pos-j)==abs(i-rank[j])){
+					flag=false;
+					break;
+				}
+			}
+			if(flag){
+				rank[pos]=i;//pos列在i行 
+				vis[i]=true;
+				dfs(pos+1); 
+				vis[i]=false;
+			}
+		}
+	}
+}
+void bbq(){
+	scanf("%d",&n);
+	dfs(1);
+	if(n!=0){
+	
+	printf("%d\n",cnt);
+	cnt=0;
+	bbq();
+	}
+}
+int main(){
+	bbq();	
+}
